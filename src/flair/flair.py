@@ -704,12 +704,8 @@ def quantify(isoform_sequences=''):
 		help='''isoform .bed file, must be specified if --stringent or check_splice is specified''')
 	parser.add_argument('--stringent', default=False, action='store_true', dest='stringent',
 		help='''Supporting reads must cover 80 percent of their isoform and extend at least 25 nt into the
-				first and last exons. If those exons are themselves shorter than 25 nt, the requirement becomes
-				'must start within 4 nt from the start" or "must end within 4 nt from the end" ''')
-	parser.add_argument('--for_only', action='store_true', dest='for_only', default=False,
-		help='specify this flag to use forward-only alignments for minimap2, useful for directRNA libraries')
-	parser.add_argument('--rev_only', action='store_true', dest='rev_only', default=False,
-		help='specify this flag to use reverse-only alignments for minimap2, useful for direct cDNA libraries')
+                first and last exons. If those exons are themselves shorter than 25 nt, the requirement becomes
+                'must start within 4 nt from the start" or "must end within 4 nt from the end" ''')
 	parser.add_argument('--check_splice', default=False, action='store_true', dest='check_splice',
 		help='''enforce coverage of 4 out of 6 bp around each splice site and no
 		insertions greater than 3 bp at the splice site''')
@@ -774,10 +770,6 @@ def quantify(isoform_sequences=''):
 	for num, sample in enumerate(samData, 0):
 		sys.stderr.write('Step 1/3. Aligning sample %s_%s, %s/%s \r' % (sample[0], sample[2], num+1, len(samData)))
 		mm2_command = ['minimap2', '-a', '-N', '4', '-t', str(args.t), args.i, sample[-2]]
-		if args.for_only:
-			mm2_command[4:4] = ['--for_only']
-		if args.rev_only:
-			mm2_command[4:4] = ['--rev_only']
 
 		try:
 			if subprocess.call(mm2_command, stdout=open(sample[-1], 'w'),
